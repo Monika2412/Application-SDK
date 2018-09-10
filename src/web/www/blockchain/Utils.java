@@ -1,15 +1,17 @@
 package web.www.blockchain;
 
+import Exceptions.InvalidArgumentException;
+
 public class Utils {
 	
 	String channelName=Config.CHANNEL_NAME;
 	String ordererHostName=OrdererConfig.ORDERER_HOSTNAME;
 	String ordererURL=OrdererConfig.ORDERER_URL;
-	String peerName=PeerConfig.PEER_HOSTNAME;
-	String url=PeerConfig.PEER_URL;
-	String hubUrl=PeerConfig.PEER_EVENT_HUB_URL;
+	String peerName=Peer.PEER_HOSTNAME;
+	String url=Peer.PEER_URL;
+	String hubUrl=Peer.PEER_EVENT_HUB_URL;
 	OrdererConfig ordererConfig;
-	PeerConfig peerConfig;
+	Peer peer;
 	CAConfig caConfig;
 	AdminConfig adminConfig;
 	String chaincode_id=Channel.CHAINCODE_ID;
@@ -20,7 +22,7 @@ public class Utils {
 	{
 		this.channelName=channelName;
 		this.ordererConfig=ordererConfig;
-		this.peerConfig=peerConfig;
+		this.peerConfi=peerConfig;
 		this.caConfig=caConfig;
 		this.adminConfig=adminConfig;
 		
@@ -30,12 +32,13 @@ public class Utils {
 		Channel channel=new Channel(channelName);
 	
 	//Setting up the network
-	public void setNetwork()
+	public void setNetwork() throws InvalidArgumentException
 	{
 	
 	//setup channel
 	//Channel channel=new Channel(channelName);
 	
+		
 	//setting up orderer
 	OrdererConfig orderer=new OrdererConfig(ordererHostName,ordererURL);
 	
@@ -46,7 +49,7 @@ public class Utils {
 	//PeerConfig defaultPeer=new PeerConfig(peerName,url,);
 	
 	//add peer to the channel
-	channel.addPeer(defaultPeer);
+	channel.addPeer(peer);
 	
 	}
 	
@@ -87,7 +90,27 @@ public class Utils {
 		return user.createUser(PeerConfig.PEER_HOSTNAME,CAConfig.CA_MSP_ID,AdminConfig.ADMIN_KEY,AdminConfig.ADMIN_CERT);
 	}
 	
+	//Checking the channel membership
+	public boolean checkChannelMembership(Channel ch)
+	{
+		if(ch.getChannelName()!=Config.CHANNEL_NAME)
+		{
+			return false;
+		}
+		return true;
+		
+	}
 	
+	//Checking whether chaincode installed on channel
+	public boolean checkInstalled(String chaincode_id,String chaincode_version,String chaincode_path)
+	{
+		if(!((channel.chainCodeInstantiated(chaincode_id,chaincode_version,chaincode_path))==true))
+		{
+			return false;
+		}
+		return true;
+		//System.out.println("Chaincode installed on channel");
+	}
 	
 	
 	
