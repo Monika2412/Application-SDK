@@ -9,18 +9,18 @@ public class Peer {
 	public static String PEER_HOSTNAME="insurance-peer";
 	public static String PEER_URL="grpcs://insurance-peer:7051";
 	public static String PEER_EVENT_HUB_URL="grpcs://insurance-peer:7053";
-	public static String PEER_PEM=readCryptoFile("insuranceOrg.pem");
+	//public static String PEER_PEM=readCryptoFile("insuranceOrg.pem");
 	public String channelName;
 	
 	Channel channel;
 	
 	
-	public Peer(String pEER_HOSTNAME, String pEER_URL, String pEER_EVENT_HUB_URL, String pEER_PEM) {
+	public Peer(String pEER_HOSTNAME, String pEER_URL, String pEER_EVENT_HUB_URL) {
 		super();
 		PEER_HOSTNAME = pEER_HOSTNAME;
 		PEER_URL = pEER_URL;
 		PEER_EVENT_HUB_URL = pEER_EVENT_HUB_URL;
-		PEER_PEM = pEER_PEM;
+		//PEER_PEM = pEER_PEM;
 	}
 	
 	public Channel getChannel()
@@ -28,7 +28,7 @@ public class Peer {
 		return channel;
 	}
 	
-	public void setChannel(Channel channel)
+	public void setChannel(Channel channel) throws InvalidArgumentException
 	{
 		if(this.channel!=null)
 		{

@@ -13,10 +13,10 @@ public class EventHub {
 		
 	}
 	
-	public void setPeerAddress(String url,String pem,String hostName)
+	public void setPeerAddress(String url,String hostName)
 	{
 		this.grpcUrl=url;
-		this.pem=pem;
+		//this.pem=pem;
 		this.name=hostName;
 	}
 	

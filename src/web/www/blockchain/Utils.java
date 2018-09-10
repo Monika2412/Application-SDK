@@ -5,12 +5,12 @@ import Exceptions.InvalidArgumentException;
 public class Utils {
 	
 	String channelName=Config.CHANNEL_NAME;
-	String ordererHostName=OrdererConfig.ORDERER_HOSTNAME;
-	String ordererURL=OrdererConfig.ORDERER_URL;
+	String ordererHostName=Orderer.ORDERER_HOSTNAME;
+	String ordererURL=Orderer.ORDERER_URL;
 	String peerName=Peer.PEER_HOSTNAME;
 	String url=Peer.PEER_URL;
 	String hubUrl=Peer.PEER_EVENT_HUB_URL;
-	OrdererConfig ordererConfig;
+	Orderer orderer;
 	Peer peer;
 	CAConfig caConfig;
 	AdminConfig adminConfig;
@@ -18,11 +18,11 @@ public class Utils {
 	String chaincode_path=Channel.CHAINCODE_PATH;
 	String chaincode_version=Channel.CHAINCODE_VERSION;
 
-	public Utils(String channelName,OrdererConfig ordererConfig,PeerConfig peerConfig,CAConfig caConfig,AdminConfig adminConfig)
+	public Utils(String channelName,Orderer ordererConfig,Peer peerConfig,CAConfig caConfig,AdminConfig adminConfig)
 	{
 		this.channelName=channelName;
-		this.ordererConfig=ordererConfig;
-		this.peerConfi=peerConfig;
+		this.orderer=ordererConfig;
+		this.peer=peerConfig;
 		this.caConfig=caConfig;
 		this.adminConfig=adminConfig;
 		
@@ -40,7 +40,7 @@ public class Utils {
 	
 		
 	//setting up orderer
-	OrdererConfig orderer=new OrdererConfig(ordererHostName,ordererURL);
+	Orderer orderer=new Orderer(ordererHostName,ordererURL);
 	
 	//add orderer to channel
 	channel.addOrderer(orderer);
@@ -76,7 +76,7 @@ public class Utils {
 	public EventHub initEventHub(String name,String url)
 	{
 		EventHub hub=new EventHub(name,url);
-		hub.setPeerAddress(PeerConfig.PEER_EVENT_HUB_URL,PeerConfig.PEER_PEM,PeerConfig.PEER_HOSTNAME);
+		hub.setPeerAddress(Peer.PEER_EVENT_HUB_URL,Peer.PEER_HOSTNAME);
 		
 		//Code to be written
 		return hub;
@@ -87,7 +87,7 @@ public class Utils {
 	public UserInfo getOrgAdmin()
 	{
 		UserInfo user=new UserInfo();
-		return user.createUser(PeerConfig.PEER_HOSTNAME,CAConfig.CA_MSP_ID,AdminConfig.ADMIN_KEY,AdminConfig.ADMIN_CERT);
+		return user.createUser(Peer.PEER_HOSTNAME,CAConfig.CA_MSP_ID,AdminConfig.ADMIN_KEY,AdminConfig.ADMIN_CERT);
 	}
 	
 	//Checking the channel membership
